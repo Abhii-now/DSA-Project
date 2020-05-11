@@ -253,3 +253,31 @@ int checkInfected(int population) {
   // free(adjMatrix);
   return count;
 }
+
+void printtable(){
+
+    printf("          Description \t                                Value \n");
+    printf("          ----------------------------------------- \n");
+    printf("          Population of town                        ->  %d \n", 2000 );
+    printf("          ----------------------------------------- \n");
+    printf("          Count of major service providers          ->  %d \n",  3);
+    printf("          ----------------------------------------- \n");
+    printf("          Count of known infected persons           ->  %d  \n", 5);
+    printf("          ----------------------------------------- \n");
+    printf("          Result                                    ->  %d \n" , 20);
+    printf("          ----------------------------------------- \n");
+    printf("          Without any social distancing (T100)      ->  %d \n" , 13);
+    printf("          ----------------------------------------- \n");
+    printf("          With social distancing reducing contacts\n");
+    printf("          to 50 percent (T50)                       ->  %d \n" , 50); 
+    
+    printf("          ----------------------------------------- \n");
+    printf("          With social distancing reducing contacts\n"); 
+    printf("          to 33 per cent (T33)                      ->  %d \n" , 33);
+    printf("          ----------------------------------------- \n");
+    printf("          With social distancing reducing contacts\n");
+    printf("          to 50 percent with assigned service\n");
+    printf("          provider (TC)                             ->  %d \n" , 49);
+    printf("          ----------------------------------------- \n");        
+
+}
