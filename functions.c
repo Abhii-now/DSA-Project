@@ -254,30 +254,30 @@ int checkInfected(int population) {
   return count;
 }
 
-void printtable(){
+void printtable(population,sp,ip,res,t100,t50,t33,t49){
 
     printf("          Description \t                                Value \n");
     printf("          ----------------------------------------- \n");
-    printf("          Population of town                        ->  %d \n", 2000 );
+    printf("          Population of town                        ->  %d \n", population );
     printf("          ----------------------------------------- \n");
-    printf("          Count of major service providers          ->  %d \n",  3);
+    printf("          Count of major service providers          ->  %d \n",  sp);
     printf("          ----------------------------------------- \n");
-    printf("          Count of known infected persons           ->  %d  \n", 5);
+    printf("          Count of known infected persons           ->  %d  \n", ip);
     printf("          ----------------------------------------- \n");
-    printf("          Result                                    ->  %d \n" , 20);
+    printf("          Result                                    ->  %d \n" , res);
     printf("          ----------------------------------------- \n");
-    printf("          Without any social distancing (T100)      ->  %d \n" , 13);
+    printf("          Without any social distancing (T100)      ->  %d \n" , t100);
     printf("          ----------------------------------------- \n");
     printf("          With social distancing reducing contacts\n");
-    printf("          to 50 percent (T50)                       ->  %d \n" , 50); 
+    printf("          to 50 percent (T50)                       ->  %d \n" , t50); 
     
     printf("          ----------------------------------------- \n");
     printf("          With social distancing reducing contacts\n"); 
-    printf("          to 33 per cent (T33)                      ->  %d \n" , 33);
+    printf("          to 33 per cent (T33)                      ->  %d \n" , t33);
     printf("          ----------------------------------------- \n");
     printf("          With social distancing reducing contacts\n");
     printf("          to 50 percent with assigned service\n");
-    printf("          provider (TC)                             ->  %d \n" , 49);
+    printf("          provider (TC)                             ->  %d \n" , t49);
     printf("          ----------------------------------------- \n");        
 
 }
