@@ -1,121 +1,55 @@
+#include "headers.h"
 int main(void) {
   srand(time(0));	
-	int results[6],sum=0;
-float avg,stddev=0.0;
+	int results[10],sum=0,pop=2000,perSP=3,socdis=0,res2[3]={0l};
+float avg,stddev=0.0,avg2=0.0;
   //int temp = doExperiments(2000, 3, 0);
 
 //  printf("%d", temp);
 	int k=0;
   for (int i = 0; i < 3; i++) {
-  	for(int j=3;j<=5;j+=2)
+  	sum=0;
+  	switch(i)
+	  	  {
+	  		case 0:	pop=2000;
+	  				break;
+	  		case 1: pop=5000;
+	  				break;
+	  		case 2: pop=10000;
+	  				break;
+	  		default:break;
+		  }
+  	for(int perSP=3;perSP<=5;perSP+=2)
   	{
-	  if(i==0){
-	  
-    			results[k]=doExperiments(2000,j,0);
-    			sum+=results[k];
-				k++;
-    			
-			}
-		else if(i==1)
-				{
-				results[k]=doExperiments(2000,j,33);
-    			sum+=results[k];
-				k++;
-    			
-				}
-		else if (i==2)
-				{
-				results[k]=doExperiments(2000,j,50);
-				sum+=results[k];
-    			k++;	
-				}
-	}
-	
+	  for(int k=0;k<3;k++)
+	  {	switch(k)
+	  	  {
+	  		case 0:socdis=0;
+	  				break;
+	  		case 1:socdis=33;
+	  				break;
+	  		case 2:socdis=50;
+	  				break;
+	  		default:break;
+		  }
+		  
+		  for(int l=0;l<10;l++)
+		  {
+		  	result[l]=doExperiments(pop,perSP,socdis);
+		  	sum+=result[l];
+		  }
+	  	
+	  }
+	}avg=(float)sum/60.0;
+	res2[i]=avg;
+	avg2+=res2[i];
   }
-	avg=(float)sum/(10.0);
-for(int i=0;i<6;i++)
+	avg2=avg2/3.0;
+for(int i=0;i<3;i++)
 {
-stddev+=pow((float)results[i]-avg,2);
+stddev+=pow((float)res2[i]-avg2,2);
 }
-stddev/=10.0;
+stddev/=3;
 stddev=sqrt(stddev);
-printf("The average for 2000 population is %f and standard deviation is %f",avg ,stddev);
-
-avg=0;stddev=0;
-sum=0;
-k=0;
-for (int i = 0; i < 3; i++) {
-  	for(int j=3;j<=5;j+=2)
-  	{
-	  if(i==0){
-	  
-    			results[k]=doExperiments(5000,j,0);
-    			sum+=results[k];
-				k++;
-    			
-			}
-		else if(i==1)
-				{
-				results[k]=doExperiments(5000,j,33);
-    			sum+=results[k];
-				k++;
-    			
-				}
-		else if (i==2)
-				{
-				results[k]=doExperiments(5000,j,50);
-				sum+=results[k];
-    			k++;	
-				}
-	}
-	
-  }
-	avg=(float)sum/(10.0);
-for(int i=0;i<6;i++)
-{
-stddev+=pow((float)results[i]-avg,2);
-}
-stddev/=10.0;
-stddev=sqrt(stddev);
-printf("The average for 5000 population is %f and standard deviation is %f",avg ,stddev);
-
-
-avg=0;stddev=0;
-sum=0;
-k=0;
-for (int i = 0; i < 3; i++) {
-  	for(int j=3;j<=5;j+=2)
-  	{
-	  if(i==0){
-	  
-    			results[k]=doExperiments(10000,j,0);
-    			sum+=results[k];
-				k++;
-    			
-			}
-		else if(i==1)
-				{
-				results[k]=doExperiments(10000,j,33);
-    			sum+=results[k];
-				k++;
-    			
-				}
-		else if (i==2)
-				{
-				results[k]=doExperiments(10000,j,50);
-				sum+=results[k];
-    			k++;	
-				}
-	}
-	
-  }
-	avg=(float)sum/(10.0);
-for(int i=0;i<6;i++)
-{
-stddev+=pow((float)results[i]-avg,2);
-}
-stddev/=10.0;
-stddev=sqrt(stddev);
-printf("The average for 10000 population is %f and standard deviation is %f",avg ,stddev);
-  return 0;
+return 0;
 }
