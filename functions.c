@@ -1,4 +1,5 @@
 #include <math.h>
+int numSP;
 
 #include "headers.h"
 
@@ -32,7 +33,6 @@ static void setRandom(int total, int num, int* arr) {
 }
 
 void setSP(int total, int per) {
-  int numSP;
   int i = 0;
   isSP = (int*)malloc(sizeof(int) * total);
   assert(isSP != NULL);
@@ -136,58 +136,95 @@ int gcd(int a, int b) {
   return gcd(b, a % b);
 }
 
-int doExperiments(int population, int perSP, int distancing) {
-  initadjMatrix(population, &adjMatrix);
+void doExperimentsFix(int pop, int per_service, int distance) {
+  initadjMatrix(pop, &adjMatrix);
+  setSP(pop, per_service);
+  int service_interaction;
+  // must divide by two as only half the matrix is being filled
+  int normal_interactions = (pop - numSP) * 20 / 2;
+  int count = 0;
+  int temp = 0;
+  if (per_service < 5)
+    service_interaction = numSP * pop * 5 / 200;
+  else
+    service_interaction = numSP * pop * 3 / 200;
+  int count_normal, count_service = 0;
 
-  int flag = 0;
-  int interactions = 0;
-  int j = 0;
-  setSP(population, perSP);
-  // setinitInfected(population);
+  printf("numSP = %d", numSP);
 
-  for (int i = 0; i < population; i++) {
-    int count = 0;
-    int temp;
-    if (isSP[i] == 1) {
-      if (perSP < 5)
-        interactions = population * 5 / 100;
-      else {
-        interactions = population * 3 / 100;
-      }
-    } else {
-      interactions = 20;
-      interactions = (interactions * distancing / 100);
-      // printf("%d\n", interactions);
-      count = (interactions * i) / (population - 1);
-      // printf("count = %d    i = %d\n", count, i);
-      j = i + 1;
-      while (count < interactions) {
-        assert(j < population);
-
-        //  printf("%d   %d  %d\n", i, j, count);
-        temp = biasedYes(i, j);
-        if (temp == 1) {
-          if (adjMatrix[i][j] != 1)
-            if (isSP[j] != 1) {
-              count++;
-              adjMatrix[i][j] = 1;
-              adjMatrix[j][i] = adjMatrix[i][j];
-            } else {
-              adjMatrix[i][j] = 1;
-              adjMatrix[j][i] = adjMatrix[i][j];
-            }
+  printf("%d  %d\n", service_interaction, normal_interactions);
+  printf("%d, %d\n", count_normal, count_service);
+  while (service_interaction > count_service &&
+         normal_interactions > count_normal) {
+    // printf("repeat :%d", temp);
+    for (int i = 0; i < pop; i++) {
+      for (int j = i; j < pop; j++)
+        if (biasedYes(i, j) == 1) {
+          if (adjMatrix[i][j] != 1) {
+            count++;
+            adjMatrix[i][j] = adjMatrix[j][i] = 1;
+            if (!isSP[i])
+              count_normal++;
+            else
+              count_service++;
+          }
         }
-
-        j++;
-        if (j >= population)
-          j = i + 1;
-      }
     }
-    // free(adjMatrix);
-    return checkInfected(population);
   }
-  // int reach[2000][2000];
+  printf("%d", count);
 }
+
+// int doExperiments(int population, int perSP, int distancing) {
+//   initadjMatrix(population, &adjMatrix);
+
+//   int flag = 0;
+//   int interactions = 0;
+//   int j = 0;
+//   setSP(population, perSP);
+//   // setinitInfected(population);
+
+//   for (int i = 0; i < population; i++) {
+//     int count = 0;
+//     int temp;
+//     if (isSP[i] == 1) {
+//       if (perSP < 5)
+//         interactions = population * 5 / 100;
+//       else {
+//         interactions = population * 3 / 100;
+//       }
+//     } else
+//       interactions = 20;
+
+//     // printf("%d\n", interactions);
+//     count = (interactions * i) / (population - 1);
+//     // printf("count = %d    i = %d\n", count, i);
+//     j = i + 1;
+//     while (count < interactions) {
+//       assert(j < population);
+
+//       //  printf("%d   %d  %d\n", i, j, count);
+//       temp = biasedYes(i, j);
+//       if (temp == 1) {
+//         if (adjMatrix[i][j] != 1)
+//           if (isSP[j] != 1) {
+//             count++;
+//             adjMatrix[i][j] = 1;
+//             adjMatrix[j][i] = adjMatrix[i][j];
+//           } else {
+//             adjMatrix[i][j] = 1;
+//             adjMatrix[j][i] = adjMatrix[i][j];
+//           }
+//       }
+
+//       j++;
+//       if (j >= population)
+//         j = i + 1;
+//     }
+//   }
+//   // free(adjMatrix);
+//   return checkInfected(population);
+// }
+
 int checkInfected(int population) {
   int** reach;
   initadjMatrix(population, &reach);
@@ -220,7 +257,7 @@ int checkInfected(int population) {
           set of intermediate vertices and the set becomes {0, 1, .. k} */
   for (k = 0; k < population; k++) {
     /// Pick all vertices as source one by on
-    for (i = k; i < population; i++) {
+    for (i = 0; i < population; i++) {
       // Pick all vertices as destination for the
       // above picked source
 
