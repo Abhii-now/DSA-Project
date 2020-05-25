@@ -174,56 +174,56 @@ void doExperimentsFix(int pop, int per_service, int distance) {
   printf("%d", count);
 }
 
-int doExperiments(int population, int perSP, int distancing) {
-  initadjMatrix(population, &adjMatrix);
+// int doExperiments(int population, int perSP, int distancing) {
+//   initadjMatrix(population, &adjMatrix);
 
-  int flag = 0;
-  int interactions = 0;
-  int j = 0;
-  setSP(population, perSP);
-  // setinitInfected(population);
+//   int flag = 0;
+//   int interactions = 0;
+//   int j = 0;
+//   setSP(population, perSP);
+//   // setinitInfected(population);
 
-  for (int i = 0; i < population; i++) {
-    int count = 0;
-    int temp;
-    if (isSP[i] == 1) {
-      if (perSP < 5)
-        interactions = population * 5 / 100;
-      else {
-        interactions = population * 3 / 100;
-      }
-    } else
-      interactions = 20;
+//   for (int i = 0; i < population; i++) {
+//     int count = 0;
+//     int temp;
+//     if (isSP[i] == 1) {
+//       if (perSP < 5)
+//         interactions = population * 5 / 100;
+//       else {
+//         interactions = population * 3 / 100;
+//       }
+//     } else
+//       interactions = 20;
 
-    // printf("%d\n", interactions);
-    count = (interactions * i) / (population - 1);
-    // printf("count = %d    i = %d\n", count, i);
-    j = i + 1;
-    while (count < interactions) {
-      assert(j < population);
+//     // printf("%d\n", interactions);
+//     count = (interactions * i) / (population - 1);
+//     // printf("count = %d    i = %d\n", count, i);
+//     j = i + 1;
+//     while (count < interactions) {
+//       assert(j < population);
 
-      //  printf("%d   %d  %d\n", i, j, count);
-      temp = biasedYes(i, j);
-      if (temp == 1) {
-        if (adjMatrix[i][j] != 1)
-          if (isSP[j] != 1) {
-            count++;
-            adjMatrix[i][j] = 1;
-            adjMatrix[j][i] = adjMatrix[i][j];
-          } else {
-            adjMatrix[i][j] = 1;
-            adjMatrix[j][i] = adjMatrix[i][j];
-          }
-      }
+//       //  printf("%d   %d  %d\n", i, j, count);
+//       temp = biasedYes(i, j);
+//       if (temp == 1) {
+//         if (adjMatrix[i][j] != 1)
+//           if (isSP[j] != 1) {
+//             count++;
+//             adjMatrix[i][j] = 1;
+//             adjMatrix[j][i] = adjMatrix[i][j];
+//           } else {
+//             adjMatrix[i][j] = 1;
+//             adjMatrix[j][i] = adjMatrix[i][j];
+//           }
+//       }
 
-      j++;
-      if (j >= population)
-        j = i + 1;
-    }
-  }
-  // free(adjMatrix);
-  return checkInfected(population);
-}
+//       j++;
+//       if (j >= population)
+//         j = i + 1;
+//     }
+//   }
+//   // free(adjMatrix);
+//   return checkInfected(population);
+// }
 
 int checkInfected(int population) {
   int** reach;
@@ -289,4 +289,32 @@ int checkInfected(int population) {
   // free(reach);
   // free(adjMatrix);
   return count;
+}
+
+void printtable(population,sp,ip,res,t100,t50,t33,t49){
+
+    printf("          Description \t                                Value \n");
+    printf("          ----------------------------------------- \n");
+    printf("          Population of town                        ->  %d \n", population );
+    printf("          ----------------------------------------- \n");
+    printf("          Count of major service providers          ->  %d \n",  sp);
+    printf("          ----------------------------------------- \n");
+    printf("          Count of known infected persons           ->  %d  \n", ip);
+    printf("          ----------------------------------------- \n");
+    printf("          Result                                    ->  %d \n" , res);
+    printf("          ----------------------------------------- \n");
+    printf("          Without any social distancing (T100)      ->  %d \n" , t100);
+    printf("          ----------------------------------------- \n");
+    printf("          With social distancing reducing contacts\n");
+    printf("          to 50 percent (T50)                       ->  %d \n" , t50); 
+    
+    printf("          ----------------------------------------- \n");
+    printf("          With social distancing reducing contacts\n"); 
+    printf("          to 33 per cent (T33)                      ->  %d \n" , t33);
+    printf("          ----------------------------------------- \n");
+    printf("          With social distancing reducing contacts\n");
+    printf("          to 50 percent with assigned service\n");
+    printf("          provider (TC)                             ->  %d \n" , t49);
+    printf("          ----------------------------------------- \n");        
+
 }
