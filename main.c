@@ -22,7 +22,7 @@ float avg,stddev=0.0,avg2=0.0;
 		  }
   	for(int perSP=3;perSP<=5;perSP+=2)
   	{
-	  for(int k=0;k<3;k++)
+	  for(int k=0;k<4;k++)
 	  {	switch(k)
 	  	  {
 	  		case 0:socdis=0;
@@ -30,6 +30,8 @@ float avg,stddev=0.0,avg2=0.0;
 	  		case 1:socdis=33;
 	  				break;
 	  		case 2:socdis=50;
+	  				break;
+			case 3:socdis=49;
 	  				break;
 	  		default:break;
 		  }
@@ -41,7 +43,7 @@ float avg,stddev=0.0,avg2=0.0;
 		  }
 	  	
 	  }
-	}avg=(float)sum/60.0;
+	}avg=(float)sum/80.0;
 	res2[i]=avg;
 	avg2+=res2[i];
   }
@@ -52,7 +54,7 @@ stddev+=pow((float)res2[i]-avg2,2);
 }
 stddev/=3;
 stddev=sqrt(stddev);
-printf ("The total standard deviation is %f",stddev);
-printf ("The total average is %f",avg2);
+printf ("\nThe total standard deviation is %f",stddev);
+printf ("\n\nThe total average is %f",avg2);
 return 0;
 }
