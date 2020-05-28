@@ -19,6 +19,10 @@ static void setRandom(int total, int num, int* arr) {
   int count = 0;
   int i = 0;
 
+  for (int i = 0; i < total; i++) {
+    arr[i] = 0;
+  }
+
   while (count < num) {
     if (randomYes() == 1) {
       if (arr[i] == 0) {
@@ -45,25 +49,23 @@ void setinitInfected(int total) {
   assert(isInfected != NULL);
   for (int i = 0; i < total; i++) {
     isInfected[i] = randomYes();
+    if (isInfected[i] == 1)
+      printf("%d is infected\n", i);
   }
 }
 
 int randomYes() {
-  {
-    int arr[1000];
-    arr[0] = 1;
-    // for (int i = 1; i < 1000; i++) {
-    //   arr[i] = 0;
-    // }
-    int temp = rand() % 1000;
-    return arr[temp];
-  }
+  int r = rand() % 1000;
+  if (r == 0)
+    return 1;
+  else
+    return 0;
 }
 
 int biasedYes(int x, int y) {
   /* Where x and y and indices of persons in
   Adjacency matrix. */
-  int common = countCommonPrimeFactors(x + 1001, y + 1001);
+  int common = countCommonPrimeFactors(x + 1002, y + 11001);
   /* Define function countPrimeFactors() that computes the
   Count of prime factors common in two arguments.
   More prime factor they have in common, more
@@ -136,42 +138,201 @@ int gcd(int a, int b) {
   return gcd(b, a % b);
 }
 
-void doExperimentsFix(int pop, int per_service, int distance) {
+void performInteractions(int pop,
+                         int normal_interactions,
+                         int service_interactions) {
+  int count_normal = 0;
+  int distance = 50;
+  int count_service = 0;
+  int i;
+  while (count_normal < normal_interactions ||
+         count_service < service_interactions) {
+    if (count_service < service_interactions &&
+        count_normal < normal_interactions) {
+      for (int j = i + 1; j < pop; j++) {
+        if (biasedYes(i, j) == 1) {
+          if (adjMatrix[i][j] == 0) {
+            adjMatrix[i][j] = adjMatrix[j][i] = 1;
+            if (isInfected[i] == 1 || isInfected[j] == 1)
+              isInfected[i] = isInfected[j] = 1;
+            if (isSP[i] == 1 || isSP[j] == 1)
+              count_service++;
+            else
+              count_normal++;
+          }
+        }
+      }
+      i++;
+      if (i >= pop)
+        i = 0;
+    } else if (count_normal >= normal_interactions &&
+               count_service < service_interactions) {
+      if (distance != 49) {
+        i++;
+        if (isSP[i] == 1) {
+          // printf("here : %d", i);
+
+          for (int j = i + 1; j < pop; j++) {
+            if (biasedYes(i, j) == 1)
+              if (adjMatrix[i][j] != 1) {
+                adjMatrix[i][j] = adjMatrix[j][i] = 1;
+                if (isInfected[i] == 1 || isInfected[j] == 1)
+                  isInfected[i] = isInfected[j] = 1;
+                count_service++;
+              }
+          }
+        }
+        if (i >= pop)
+          i = 0;
+      }
+    } else if (count_normal < normal_interactions &&
+               count_service >= service_interactions) {
+      i++;
+      if (i >= pop)
+        i = 0;
+      if (isSP[i] != 1) {
+        // printf("here2 : %d", i);
+
+        for (int j = i + 1; j < pop; j++) {
+          if (biasedYes(i, j) == 1)
+            if (adjMatrix[i][j] != 1) {
+              adjMatrix[i][j] = adjMatrix[j][i] = 1;
+              if (isInfected[i] == 1 || isInfected[j] == 1) {
+                isInfected[i] = isInfected[j] = 1;
+              }
+              count_normal++;
+            }
+        }
+      }
+    }
+  }
+}
+
+void performInteractionsTC(int pop,
+                           int normal_interactions,
+                           int service_interactions) {
+  int distance = 50;
+  int count_normal = 0;
+  int count_service = 0;
+  int i = 0;
+  while (count_normal < normal_interactions ||
+         count_service < service_interactions) {
+    if (count_service < service_interactions &&
+        count_normal < normal_interactions) {
+      for (int j = i + 2; j < pop; j = j + 2) {
+        if (biasedYes(i, j) == 1) {
+          if (adjMatrix[i][j] == 0) {
+            adjMatrix[i][j] = adjMatrix[j][i] = 1;
+            if (isInfected[i] == 1 || isInfected[j] == 1)
+              isInfected[i] = isInfected[j] = 1;
+            if (isSP[i] == 1 || isSP[j] == 1)
+              count_service++;
+            else
+              count_normal++;
+          }
+        }
+      }
+      i++;
+      if (i >= pop)
+        i = 0;
+    } else if (count_normal >= normal_interactions &&
+               count_service < service_interactions) {
+      if (isSP[i] == 1) {
+        // printf("here : %d", i);
+
+        for (int j = i + 2; j < pop; j = j + 2) {
+          if (biasedYes(i, j) == 1)
+            if (adjMatrix[i][j] != 1) {
+              adjMatrix[i][j] = adjMatrix[j][i] = 1;
+              if (isInfected[i] == 1 || isInfected[j] == 1)
+                isInfected[i] = isInfected[j] = 1;
+              count_service++;
+            }
+        }
+      }
+      i++;
+      if (i >= pop)
+        i = 0;
+    }
+
+    else if (count_normal < normal_interactions &&
+             count_service >= service_interactions) {
+      if (i >= pop)
+        i = 0;
+      if (isSP[i] != 1) {
+        // printf("here2 : %d", i);
+
+        for (int j = i + 2; j < pop; j = j + 2) {
+          if (biasedYes(i, j) == 1)
+            if (adjMatrix[i][j] != 1) {
+              adjMatrix[i][j] = adjMatrix[j][i] = 1;
+              if (isInfected[i] == 1 || isInfected[j] == 1) {
+                isInfected[i] = isInfected[j] = 1;
+              }
+              count_normal++;
+            }
+        }
+      }
+      i++;
+      if (i >= pop)
+        i = 0;
+    }
+  }
+}
+
+int doExperimentsFix(int pop, int per_service, int distance) {
   initadjMatrix(pop, &adjMatrix);
   setSP(pop, per_service);
+  setinitInfected(pop);
   int service_interaction;
   // must divide by two as only half the matrix is being filled
-  int normal_interactions = (pop - numSP) * 20 / 2;
+
+  //*******distance still to be used********
+  int normal_interactions = (pop - numSP) * 20 * (100 - distance) / (100 * 2);
   int count = 0;
-  int temp = 0;
   if (per_service < 5)
     service_interaction = numSP * pop * 5 / 200;
   else
     service_interaction = numSP * pop * 3 / 200;
-  int count_normal, count_service = 0;
 
-  printf("numSP = %d", numSP);
+  printf("numSP = %d\n", numSP);
 
-  printf("%d  %d\n", service_interaction, normal_interactions);
-  printf("%d, %d\n", count_normal, count_service);
-  while (service_interaction > count_service &&
-         normal_interactions > count_normal) {
-    // printf("repeat :%d", temp);
-    for (int i = 0; i < pop; i++) {
-      for (int j = i; j < pop; j++)
-        if (biasedYes(i, j) == 1) {
-          if (adjMatrix[i][j] != 1) {
-            count++;
-            adjMatrix[i][j] = adjMatrix[j][i] = 1;
-            if (!isSP[i])
-              count_normal++;
-            else
-              count_service++;
-          }
-        }
+  printf("%d   %d\n", normal_interactions, service_interaction);
+  int count_normal = 0;
+  int count_service = 0;
+  int i = 0;
+  printf("%d,    %d\n", count_normal, count_service);
+
+  printf("%d,    %d\n", count_service, count_normal);
+
+  count = 0;
+  int interactions = 0;
+  performInteractionsTC(pop, normal_interactions, service_interaction);
+  int temp = 0;
+  for (int i = 0; i < pop; i++) {
+    for (int j = 0; j < pop; j++)
+      if (adjMatrix[j][i] == 1) {
+        // printf("interactions by row 5 %d is --> ,", i);
+        temp++;
+      }
+  }
+  temp = 0;
+
+  for (int i = 0; i < pop; i++) {
+    if (adjMatrix[6][i] == 1) {
+      printf("interactions by row 5  is --> %d ,", i);
+      temp++;
     }
   }
-  printf("%d", count);
+  printf("interactions by 5 ===== %d ", temp);
+  for (int i = 0; i < pop; i++) {
+    /* code */
+    if (isInfected[i] == 1) {
+      count++;
+    } else
+      printf("row is %d  ", i);
+  }
+  return count;
 }
 
 // int doExperiments(int population, int perSP, int distancing) {
@@ -225,96 +386,91 @@ void doExperimentsFix(int pop, int per_service, int distance) {
 //   return checkInfected(population);
 // }
 
-int checkInfected(int population) {
-  int** reach;
-  initadjMatrix(population, &reach);
-  clock_t t;
-  t = clock();
-  int checkNeeded[population];
-  /* reach[][] will be the output matrix that will finally have the
-       shortest distances between every pair of vertices */
-  int i, j, k;
-  int count = 0;
+// int checkInfected(int population) {
+//   int** reach;
+//   initadjMatrix(population, &reach);
+//   clock_t t;
+//   t = clock();
+//   /* reach[][] will be the output matrix that will finally have the
+//        shortest distances between every pair of vertices */
+//   int i, j, k;
+//   int count = 0;
 
-  setinitInfected(population);
+//   setinitInfected(population);
 
-  /* Initialize the solution matrix same as input graph matrix. Or
-     we can say the initial values of shortest distances are based
-     on shortest paths considering no intermediate vertex. */
-  // reach[1][1] = 1;
-  for (int i = 0; i < population; i++) {
-    for (int j = 0; j < population; j++) {
-      reach[i][j] = adjMatrix[i][j];
-    }
-  }
+//   for (int i = 0; i < population; i++) {
+//     for (int j = 0; j < population; j++) {
+//       reach[i][j] = adjMatrix[i][j];
+//     }
+//   }
 
-  /* Add all vertices one by one to the set of intermediate vertices.
-    ---> Before start of a iteration, we have reachability values for
-         all pairs of vertices such that the reachability values
-         consider only the vertices in set {0, 1, 2, .. k-1} as
-         intermediate vertices.
-    ----> After the end of a iteration, vertex no. k is added to the
-          set of intermediate vertices and the set becomes {0, 1, .. k} */
-  for (k = 0; k < population; k++) {
-    /// Pick all vertices as source one by on
-    for (i = 0; i < population; i++) {
-      // Pick all vertices as destination for the
-      // above picked source
+//   for (k = 0; k < population; k++) {
+//     for (i = 0; i < population; i++) {
+//       for (j = 0; j < population; j++) {
+//         // If vertex k is on a path from i to j,
+//         // then make sure that the value of reach[i][j] is 1
+//         reach[i][j] = reach[i][j] || (reach[i][k] && reach[k][j]);
+//       }
+//       if (reach[k][i] == 1) {
+//         count++;
+//       }
+//     }
+//   }
+//   // for (int i = 0; i < population; i++) {
+//   //   if (isInfected[i] == 1)
+//   //     for (int j = 0; j < population; j++) {
+//   //       if (reach[i][j] == 1) {
+//   //         checkNeeded[j] = 1;
+//   //       }
+//   //     }
+//   // }
 
-      for (j = 0; j < population; j++) {
-        // If vertex k is on a path from i to j,
-        // then make sure that the value of reach[i][j] is 1
-        reach[i][j] = reach[i][j] || (reach[i][k] && reach[k][j]);
-      }
-    }
-  }
-  for (int i = 0; i < population; i++) {
-    if (isInfected[i] == 1)
-      for (int j = 0; j < population; j++) {
-        if (reach[i][j] == 1) {
-          checkNeeded[j] = 1;
-        }
-      }
-  }
+//   // for (int i = 0; i < population; i++) {
+//   //   if (checkNeeded[i] == checkNeeded2[i]) {
+//   //     count++;
+//   //   } else {
+//   //     printf("not the same\n");
+//   //   }
+//   // }
+//   t = clock() - t;
+//   double time_taken = ((double)t) / CLOCKS_PER_SEC;  // in seconds
 
-  for (int i = 0; i < population; i++) {
-    if (checkNeeded[i] == 1) {
-      count++;
-    }
-  }
-  t = clock() - t;
-  double time_taken = ((double)t) / CLOCKS_PER_SEC;  // in seconds
+//   printf("fun() took %f seconds to execute \n", time_taken);
+//   return count;
+//   // free(reach);
+//   // free(adjMatrix);
+// }
 
-  printf("fun() took %f seconds to execute \n", time_taken);
-  // free(reach);
-  // free(adjMatrix);
-  return count;
-}
+void printtable(int population,
+                int sp,
+                int ip,
+                int res,
+                int t100,
+                int t50,
+                int t33,
+                int t49) {
+  printf("          Description \t                                Value \n");
+  printf("          ----------------------------------------- \n");
+  printf("          Population of town                        ->  %d \n",
+         population);
+  printf("          ----------------------------------------- \n");
+  printf("          Count of major service providers          ->  %d \n", sp);
+  printf("          ----------------------------------------- \n");
+  printf("          Count of known infected persons           ->  %d  \n", ip);
+  printf("          ----------------------------------------- \n");
+  printf("          Result                                    ->  %d \n", res);
+  printf("          ----------------------------------------- \n");
+  printf("          Without any social distancing (T100)      ->  %d \n", t100);
+  printf("          ----------------------------------------- \n");
+  printf("          With social distancing reducing contacts\n");
+  printf("          to 50 percent (T50)                       ->  %d \n", t50);
 
-void printtable(population,sp,ip,res,t100,t50,t33,t49){
-
-    printf("          Description \t                                Value \n");
-    printf("          ----------------------------------------- \n");
-    printf("          Population of town                        ->  %d \n", population );
-    printf("          ----------------------------------------- \n");
-    printf("          Count of major service providers          ->  %d \n",  sp);
-    printf("          ----------------------------------------- \n");
-    printf("          Count of known infected persons           ->  %d  \n", ip);
-    printf("          ----------------------------------------- \n");
-    printf("          Result                                    ->  %d \n" , res);
-    printf("          ----------------------------------------- \n");
-    printf("          Without any social distancing (T100)      ->  %d \n" , t100);
-    printf("          ----------------------------------------- \n");
-    printf("          With social distancing reducing contacts\n");
-    printf("          to 50 percent (T50)                       ->  %d \n" , t50); 
-    
-    printf("          ----------------------------------------- \n");
-    printf("          With social distancing reducing contacts\n"); 
-    printf("          to 33 per cent (T33)                      ->  %d \n" , t33);
-    printf("          ----------------------------------------- \n");
-    printf("          With social distancing reducing contacts\n");
-    printf("          to 50 percent with assigned service\n");
-    printf("          provider (TC)                             ->  %d \n" , t49);
-    printf("          ----------------------------------------- \n");        
-
+  printf("          ----------------------------------------- \n");
+  printf("          With social distancing reducing contacts\n");
+  printf("          to 33 per cent (T33)                      ->  %d \n", t33);
+  printf("          ----------------------------------------- \n");
+  printf("          With social distancing reducing contacts\n");
+  printf("          to 50 percent with assigned service\n");
+  printf("          provider (TC)                             ->  %d \n", t49);
+  printf("          ----------------------------------------- \n");
 }
