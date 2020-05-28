@@ -3,9 +3,6 @@ int numSP;
 
 #include "headers.h"
 
-// int population = 2000;
-// int adjMatrix[population][population];
-
 void printMatrix(int edgeSize) {
   for (int i = 0; i < edgeSize; i++) {
     printf("\n");
@@ -142,13 +139,15 @@ void performInteractions(int pop,
                          int normal_interactions,
                          int service_interactions) {
   int count_normal = 0;
-  int distance = 50;
   int count_service = 0;
-  int i;
+  int i = 0;
   while (count_normal < normal_interactions ||
          count_service < service_interactions) {
     if (count_service < service_interactions &&
         count_normal < normal_interactions) {
+      i++;
+      if (i >= pop)
+        i = 0;
       for (int j = i + 1; j < pop; j++) {
         if (biasedYes(i, j) == 1) {
           if (adjMatrix[i][j] == 0) {
@@ -162,12 +161,12 @@ void performInteractions(int pop,
           }
         }
       }
-      i++;
-      if (i >= pop)
-        i = 0;
+
     } else if (count_normal >= normal_interactions &&
                count_service < service_interactions) {
       i++;
+      if (i >= pop)
+        i = 0;
       if (isSP[i] == 1) {
         // printf("here : %d", i);
 
@@ -181,8 +180,6 @@ void performInteractions(int pop,
             }
         }
       }
-      if (i >= pop)
-        i = 0;
     } else if (count_normal < normal_interactions &&
                count_service >= service_interactions) {
       i++;
@@ -215,26 +212,9 @@ void performInteractionsTC(int pop,
   int i = 0;
   while (count_normal < normal_interactions ||
          count_service < service_interactions) {
-    if (count_service < service_interactions &&
-        count_normal < normal_interactions) {
-      for (int j = i + 2; j < pop; j = j + 2) {
-        if (biasedYes(i, j) == 1) {
-          if (adjMatrix[i][j] == 0) {
-            adjMatrix[i][j] = adjMatrix[j][i] = 1;
-            if (isInfected[i] == 1 || isInfected[j] == 1)
-              isInfected[i] = isInfected[j] = 1;
-            if (isSP[i] == 1 || isSP[j] == 1)
-              count_service++;
-            else
-              count_normal++;
-          }
-        }
-      }
-      i++;
+    if (count_service < service_interactions) {
       if (i >= pop)
         i = 0;
-    } else if (count_normal >= normal_interactions &&
-               count_service < service_interactions) {
       if (isSP[i] == 1) {
         // printf("here : %d", i);
 
@@ -249,8 +229,7 @@ void performInteractionsTC(int pop,
         }
       }
       i++;
-      if (i >= pop)
-        i = 0;
+
     }
 
     else if (count_normal < normal_interactions &&
@@ -260,76 +239,64 @@ void performInteractionsTC(int pop,
       if (isSP[i] != 1) {
         // printf("here2 : %d", i);
 
-        for (int j = i + 2; j < pop; j = j + 2) {
-          if (biasedYes(i, j) == 1)
-            if (adjMatrix[i][j] != 1) {
-              adjMatrix[i][j] = adjMatrix[j][i] = 1;
-              if (isInfected[i] == 1 || isInfected[j] == 1) {
-                isInfected[i] = isInfected[j] = 1;
+        for (int j = i + 1; j < pop; j++) {
+          if (isSP[j] != 1) {
+            if (biasedYes(i, j) == 1)
+              if (adjMatrix[i][j] != 1) {
+                adjMatrix[i][j] = adjMatrix[j][i] = 1;
+                if (isInfected[i] == 1 || isInfected[j] == 1) {
+                  isInfected[i] = isInfected[j] = 1;
+                }
+                count_normal++;
               }
-              count_normal++;
-            }
+          }
         }
       }
       i++;
-      if (i >= pop)
-        i = 0;
     }
   }
 }
 
-int doExperimentsFix(int pop, int per_service, int distance) {
+int doExperiments(int pop, int per_service, int distance) {
   initadjMatrix(pop, &adjMatrix);
   setSP(pop, per_service);
   setinitInfected(pop);
   int service_interaction;
-  // must divide by two as only half the matrix is being filled
+  int flag = 0;
 
-  //*******distance still to be used********
+  if (distance == 49) {
+    distance = 50;
+    flag = 1;
+  }
   int normal_interactions = (pop - numSP) * 20 * (100 - distance) / (100 * 2);
-  int count = 0;
   if (per_service < 5)
     service_interaction = numSP * pop * 5 / 200;
   else
     service_interaction = numSP * pop * 3 / 200;
 
-  printf("numSP = %d\n", numSP);
-
-  printf("%d   %d\n", normal_interactions, service_interaction);
-  int count_normal = 0;
-  int count_service = 0;
-  int i = 0;
-  printf("%d,    %d\n", count_normal, count_service);
-
-  printf("%d,    %d\n", count_service, count_normal);
-
-  count = 0;
   int interactions = 0;
-  performInteractionsTC(pop, normal_interactions, service_interaction);
-  int temp = 0;
-  for (int i = 0; i < pop; i++) {
-    for (int j = 0; j < pop; j++)
-      if (adjMatrix[j][i] == 1) {
-        // printf("interactions by row 5 %d is --> ,", i);
-        temp++;
-      }
-  }
-  temp = 0;
+  if (flag == 0)
+    performInteractions(pop, normal_interactions, service_interaction);
+  else
+    performInteractionsTC(pop, normal_interactions, service_interaction);
 
-  for (int i = 0; i < pop; i++) {
-    if (adjMatrix[6][i] == 1) {
-      printf("interactions by row 5  is --> %d ,", i);
-      temp++;
+  int temp = 0;
+  for (int j = 0; j < pop; j++) {
+    for (int i = 0; i < pop; i++) {
+      if (adjMatrix[i][j] == 1)
+        temp++;
     }
   }
-  printf("interactions by 5 ===== %d ", temp);
+
+  printf(" ****** interactions = %d ******* \n", temp);
+
+  int count = 0;
   for (int i = 0; i < pop; i++) {
-    /* code */
-    if (isInfected[i] == 1) {
+    if (isInfected[i] == 1)
       count++;
-    } else
-      printf("row is %d  ", i);
   }
+  printf(" ****** infected are = %d ******* \n", count);
+
   return count;
 }
 

@@ -5,9 +5,9 @@ int main(void) {
   srand(time(0));
   int results[10], sum = 0, pop = 2000, perSP = 3, socdis = 0, res2[3] = {0l};
   float avg, stddev = 0.0, avg2 = 0.0;
-  // int temp = doExperiments(2000, 3, 0);
+  int temp = doExperiments(2000, 3, 50);
 
-  //  printf("%d", temp);
+   printf("%d", temp);
   int k = 0;
   for (int i = 0; i < 3; i++) {
     sum = 0;
@@ -47,6 +47,7 @@ int main(void) {
           results[l] = doExperiments(pop, perSP, socdis);
           sum += results[l];
         }
+        printf("done : %d", pop);
       }
     }
     avg = (float)sum / 80.0;
