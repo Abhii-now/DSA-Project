@@ -167,24 +167,22 @@ void performInteractions(int pop,
         i = 0;
     } else if (count_normal >= normal_interactions &&
                count_service < service_interactions) {
-      if (distance != 49) {
-        i++;
-        if (isSP[i] == 1) {
-          // printf("here : %d", i);
+      i++;
+      if (isSP[i] == 1) {
+        // printf("here : %d", i);
 
-          for (int j = i + 1; j < pop; j++) {
-            if (biasedYes(i, j) == 1)
-              if (adjMatrix[i][j] != 1) {
-                adjMatrix[i][j] = adjMatrix[j][i] = 1;
-                if (isInfected[i] == 1 || isInfected[j] == 1)
-                  isInfected[i] = isInfected[j] = 1;
-                count_service++;
-              }
-          }
+        for (int j = i + 1; j < pop; j++) {
+          if (biasedYes(i, j) == 1)
+            if (adjMatrix[i][j] != 1) {
+              adjMatrix[i][j] = adjMatrix[j][i] = 1;
+              if (isInfected[i] == 1 || isInfected[j] == 1)
+                isInfected[i] = isInfected[j] = 1;
+              count_service++;
+            }
         }
-        if (i >= pop)
-          i = 0;
       }
+      if (i >= pop)
+        i = 0;
     } else if (count_normal < normal_interactions &&
                count_service >= service_interactions) {
       i++;
