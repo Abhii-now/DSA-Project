@@ -406,6 +406,16 @@ int doExperiments(int pop, int per_service, int distance) {
 //   // free(adjMatrix);
 // }
 
+
+int countIP(int pop)
+{
+	int count=0;
+	for(int i=0;i<pop;i++)
+	{
+		if(isSP[i]==1) count++;
+	}
+	return count;
+}
 void printtable(int population,
                 int sp,
                 int ip,
