@@ -9,7 +9,7 @@ int** adjMatrix;
 int* isSP;
 int* isInfected;
 
-int doExperiments(int, int, int);  // performs
+int doExperiments(int, int, int, int);  // performs
 int randomYes(); /* randomly marks the required number of nodes in the matrix
                      as service providers.*/
 // void initadjMatrix(int, int*); /*initializes a n*n adjacent matrix*/
