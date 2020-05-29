@@ -291,9 +291,6 @@ int doExperiments(int pop, int per_service, int distance, int infected) {
   for (int i = 0; i < pop; i++) {
     if (isInfected[i] == 1)
       count++;
-    else {
-      printf("uninfected =%d  ", i);
-    }
   }
   // printf(" ****** infected are = %d ******* \n", count);
 

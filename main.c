@@ -2,11 +2,10 @@
 
 int main(void) {
   srand(time(0));
-
-  int results[10], sum = 0, pop = 2000, perSP = 3, socdis = 0, ip,
-                   res3[4] = {0};
-  double stddev[4] = {0.0};
-  // int temp = doExperiments(2000, 3, 49, 5);
+  int results[10] = {0}, sum = 0, pop = 2000, perSP = 3, socdis = 0, ip = 0,
+      res3[4] = {0}, infection = 0;
+  float stddev[4] = {0.0};
+  // int temp = doExperiments(2000, 3, 0);
 
   // printf("%d", temp);
   int k = 0;
@@ -14,12 +13,15 @@ int main(void) {
     switch (i) {
       case 0:
         pop = 2000;
+        infection = 5;
         break;
       case 1:
         pop = 5000;
+        infection = 30;
         break;
       case 2:
         pop = 10000;
+        infection = 100;
         break;
       default:
         break;
@@ -44,10 +46,11 @@ int main(void) {
           socdis = 0;
           break;
         case 1:
-          socdis = 33;
+          socdis = 50;
+
           break;
         case 2:
-          socdis = 50;
+          socdis = 33;
           break;
         case 3:
           socdis = 49;
@@ -57,15 +60,16 @@ int main(void) {
       }
 
       for (int l = 0; l < 10; l++) {
-        results[l] = doExperiments(pop, perSP, socdis);
+        printf(" pop = %d perSP = %d iteration = %d infection = %d \n", pop,
+               perSP, l, infection);
+        results[l] = doExperiments(pop, perSP, socdis, infection);
         sum += results[l];
-        printf(" pop : %d   socdis : %d iteration : %d \n", pop, socdis, l);
       }
-      res3[k] = sum / 10;  // res3[] stores the average of these 10iterations
+      res3[k] = sum / 10;  // res3[] stores the average of these 10 iterations
       for (int i2 = 0; i2 < 10; i2++) {
         stddev[k] += pow((float)results[i2] - res3[k], 2);
       }
-      stddev[k] /= 3.0;
+      stddev[k] /= 10.0;
       stddev[k] = sqrt(stddev[k]);
     }
     ip = countIP(pop);
