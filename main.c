@@ -1,7 +1,7 @@
 int main(void) {
   srand(time(0));	
-	int results[10],sum=0,pop=2000,perSP=3,socdis=0,ip,res3[4]={0};
-float stddev[4]={0.0};
+	int results[10]={0},sum=0,pop=2000,perSP=3,socdis=0,ip=0,res3[4]={0};
+    float stddev[4]={0.0};
   //int temp = doExperiments(2000, 3, 0);
 
 //  printf("%d", temp);
@@ -52,8 +52,8 @@ float stddev[4]={0.0};
 		{
 		stddev[k]+=pow((float)results[i2]-res3[k],2);
 		}
-		stddev[k]/=3.0;
-		stddev[k]=sqrt(stddev);	
+		stddev[k]/=10.0;
+		stddev[k]=sqrt(stddev[k]);	
 	  }
 	  ip=countIP(pop);
 	  printtable(pop,perSP,ip,res3[0],res3[1],res3[2],res3[3],stddev[0],stddev[1],stddev[2],stddev[3]);
