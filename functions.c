@@ -406,7 +406,7 @@ int doExperiments(int pop, int per_service, int distance) {
 //   // free(adjMatrix);
 // }
 
-
+//new function added below
 int countIP(int pop)
 {
 	int count=0;
