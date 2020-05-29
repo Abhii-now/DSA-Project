@@ -412,43 +412,32 @@ int countIP(int pop) {
   }
   return count;
 }
-void printtable(int population,
-                int sp,
-                int ip,
-                int t100,
-                int t50,
-                int t33,
-                int t49,
-                float stddev1,
-                float stddev2,
-                float stddev3,
-                float stddev4) {
-  printf("          Description \t                                Value \n");
-  printf("          ----------------------------------------- \n");
-  printf("          Population of town                        ->  %d \n",
-         population);
-  printf("          ----------------------------------------- \n");
-  printf("          Count of major service providers          ->  %d \n", sp);
-  printf("          ----------------------------------------- \n");
-  printf("          Count of known infected persons           ->  %d  \n", ip);
-  printf("          ----------------------------------------- \n");
+void
+printtable (int population, int sp, int ip,int t100, int t50, int t33,int t49,float stddev1,float stddev2,float stddev3,float stddev4)
+{
 
-  printf("          ----------------------------------------- \n");
-  printf("          Without any social distancing (T100)      ->  %d %f\n",
-         t100, stddev1);
-  printf("          ----------------------------------------- \n");
-  printf("          With social distancing reducing contacts\n");
-  printf("          to 50 percent (T50)                       ->  %d %f \n",
-         t50, stddev2);
+printf("\n");
+    printf("        | Description \t                               | Value \n");
+    printf("        | ---------------------------------------------|\n");
+    printf("        | Population of town                        -> | %d \n", population );
+    printf("        | ---------------------------------------------|\n");
+    printf("        | Count of major service providers          -> | %d \n", sp);
+    printf("        | ---------------------------------------------|\n");
+    printf("        | Count of known infected persons           -> | %d \n", ip);
+    printf("        | ---------------------------------------------| \n");
+    printf("        | Result                                    -> | %d \n" , 20);
+    printf("        | ---------------------------------------------| \n");
+    printf("        | Without any social distancing (T100)      -> | %d , %f \n" , t100 , stddev1);
+    printf("        | ---------------------------------------------| \n");
+    printf("        | With social distancing reducing contacts     |\n");
+    printf("        | to 50 percent (T50)                       -> | %d , %f \n" , t50 , stddev2); 
+    printf("        | ---------------------------------------------| \n");
+    printf("        | With social distancing reducing contacts     |\n"); 
+    printf("        | to 33 per cent (T33)                      -> | %d , %f \n" , t33, stddev3);
+    printf("        | ---------------------------------------------| \n");
+    printf("        | With social distancing reducing contacts     |\n");
+    printf("        | to 50 percent with assigned service          |\n");
+    printf("        | provider (TC)                             -> | %d , %f \n" , t49, stddev4);
+    printf("        | ---------------------------------------------| \n");        
 
-  printf("          ----------------------------------------- \n");
-  printf("          With social distancing reducing contacts\n");
-  printf("          to 33 per cent (T33)                      ->  %d %f\n", t33,
-         stddev3);
-  printf("          ----------------------------------------- \n");
-  printf("          With social distancing reducing contacts\n");
-  printf("          to 50 percent with assigned service\n");
-  printf("          provider (TC)                             ->  %d %f\n", t49,
-         stddev4);
-  printf("          ----------------------------------------- \n");
 }
