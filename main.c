@@ -67,7 +67,7 @@ int main(void) {
       }
       res3[k] = sum / 10;  // res3[] stores the average of these 10 iterations
       for (int i2 = 0; i2 < 10; i2++) {
-        stddev[k] += pow((float)results[i2] - res3[k], 2);
+        stddev[k] += pow((float)(results[i2] - res3[k]), 2);
       }
       stddev[k] /= 10.0;
       stddev[k] = sqrt(stddev[k]);
