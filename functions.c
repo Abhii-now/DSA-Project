@@ -419,11 +419,16 @@ int countIP(int pop)
 void printtable(int population,
                 int sp,
                 int ip,
-                int res,
+                //int res,
                 int t100,
                 int t50,
                 int t33,
-                int t49) {
+                int t49,
+	       	float  stddev1,
+		float stddev2,
+		float stddev3,
+		float stddev4) 
+{
   printf("          Description \t                                Value \n");
   printf("          ----------------------------------------- \n");
   printf("          Population of town                        ->  %d \n",
@@ -433,7 +438,7 @@ void printtable(int population,
   printf("          ----------------------------------------- \n");
   printf("          Count of known infected persons           ->  %d  \n", ip);
   printf("          ----------------------------------------- \n");
-  printf("          Result                                    ->  %d \n", res);
+ // printf("          Result                                    ->  %d \n", res); //Not required
   printf("          ----------------------------------------- \n");
   printf("          Without any social distancing (T100)      ->  %d \n", t100);
   printf("          ----------------------------------------- \n");
