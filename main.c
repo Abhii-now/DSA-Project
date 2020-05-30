@@ -1,17 +1,33 @@
+/************************************** DSA - PROJECT - 2 ***********************************************/
+/* SUBMITTED BY :-
+        _______________________________________
+       |          NAME           | ROLL NUMBER | 
+       |_________________________|_____________|
+       | ABHINAV JAIN            | 19UCS240    |
+       | SAATVIK SINGH           | 19UCS133    |
+       | AKSHAT SONI             | 19UEC087    |
+       | ABHINAV SINGH CHAUHAN   | 19UCS148    |
+       | SAMARPIT SACHAN         | 19UCS036    |
+       | DHRUV TRIPATHI          | 19UCC076    |
+       | TANUJ SAXENA            | 19UCS030    |
+       |_________________________|_____________|
+*/
+/*********************************************************************************************************/
+
 #include "headers.h"
 
 int main(void) {
   srand(time(0));
   int results[10] = {0}, pop = 2000, perSP = 3, socdis = 0, ip = 0,
       infection = 0;
-  double sum = 0;
+  double sum = 0;                   // initialisation of different variables and arrays as per requirement
   double res3[4] = {0.0};
   double stddev[4] = {0.0};
   // int temp = doExperiments(2000, 3, 33, 5);
 
   // printf("%d", temp);
   int k = 0;
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 3; i++) {     // loop used to take account of population of town and number of known infected persons
     switch (i) {
       case 0:
         pop = 2000;
@@ -41,7 +57,7 @@ int main(void) {
       default:
         break;
     }
-    for (int k = 0; k < 4; k++) {
+    for (int k = 0; k < 4; k++) {         // loop used to consider all given cases of social distancing for each population
       sum = 0;
       switch (k) {
         case 0:
@@ -69,8 +85,8 @@ int main(void) {
       }
       res3[k] = sum / 10;  // res3[] stores the average of these 10 iterations
       for (int i2 = 0; i2 < 10; i2++) {
-        stddev[k] += (float)pow((float)results[i2] - res3[k], 2);
-      }
+        stddev[k] += (float)pow((float)results[i2] - res3[k], 2); 
+      }                    // calculation of standard deviation for each case
       stddev[k] /= 10.0;
       stddev[k] = sqrt(stddev[k]);
       printf("stddev : %f for k : %d is", stddev[k], k);
@@ -78,6 +94,7 @@ int main(void) {
     ip = countIP(pop);
     printtable(pop, perSP, ip, res3[0], res3[1], res3[2], res3[3], stddev[0],
                stddev[1], stddev[2], stddev[3]);
+                            // printing of the table providing all information required
     for (int i = 0; i < 4; i++)
       stddev[i] = 0;
   }
