@@ -277,15 +277,6 @@ int doExperiments(int pop, int per_service, int distance, int infected) {
   else
     performInteractionsTC(pop, normal_interactions, service_interaction);
 
-  // int temp = 0;
-  // for (int j = 0; j < pop; j++) {
-  //   for (int i = 0; i < pop; i++) {
-  //     if (adjMatrix[i][j] == 1)
-  //       temp++;
-  //   }
-  // }
-
-  // printf(" ****** interactions = %d ******* \n", temp);
 
   int count = 0;
   for (int i = 0; i < pop; i++) {
@@ -297,111 +288,6 @@ int doExperiments(int pop, int per_service, int distance, int infected) {
   return count;
 }
 
-// int doExperiments(int population, int perSP, int distancing) {
-//   initadjMatrix(population, &adjMatrix);
-
-//   int flag = 0;
-//   int interactions = 0;
-//   int j = 0;
-//   setSP(population, perSP);
-//   // setinitInfected(population);
-
-//   for (int i = 0; i < population; i++) {
-//     int count = 0;
-//     int temp;
-//     if (isSP[i] == 1) {
-//       if (perSP < 5)
-//         interactions = population * 5 / 100;
-//       else {
-//         interactions = population * 3 / 100;
-//       }
-//     } else
-//       interactions = 20;
-
-//     // printf("%d\n", interactions);
-//     count = (interactions * i) / (population - 1);
-//     // printf("count = %d    i = %d\n", count, i);
-//     j = i + 1;
-//     while (count < interactions) {
-//       assert(j < population);
-
-//       //  printf("%d   %d  %d\n", i, j, count);
-//       temp = biasedYes(i, j);
-//       if (temp == 1) {
-//         if (adjMatrix[i][j] != 1)
-//           if (isSP[j] != 1) {
-//             count++;
-//             adjMatrix[i][j] = 1;
-//             adjMatrix[j][i] = adjMatrix[i][j];
-//           } else {
-//             adjMatrix[i][j] = 1;
-//             adjMatrix[j][i] = adjMatrix[i][j];
-//           }
-//       }
-
-//       j++;
-//       if (j >= population)
-//         j = i + 1;
-//     }
-//   }
-//   // free(adjMatrix);
-//   return checkInfected(population);
-// }
-
-// int checkInfected(int population) {
-//   int** reach;
-//   initadjMatrix(population, &reach);
-//   clock_t t;
-//   t = clock();
-//   /* reach[][] will be the output matrix that will finally have the
-//        shortest distances between every pair of vertices */
-//   int i, j, k;
-//   int count = 0;
-
-//   setinitInfected(population);
-
-//   for (int i = 0; i < population; i++) {
-//     for (int j = 0; j < population; j++) {
-//       reach[i][j] = adjMatrix[i][j];
-//     }
-//   }
-
-//   for (k = 0; k < population; k++) {
-//     for (i = 0; i < population; i++) {
-//       for (j = 0; j < population; j++) {
-//         // If vertex k is on a path from i to j,
-//         // then make sure that the value of reach[i][j] is 1
-//         reach[i][j] = reach[i][j] || (reach[i][k] && reach[k][j]);
-//       }
-//       if (reach[k][i] == 1) {
-//         count++;
-//       }
-//     }
-//   }
-//   // for (int i = 0; i < population; i++) {
-//   //   if (isInfected[i] == 1)
-//   //     for (int j = 0; j < population; j++) {
-//   //       if (reach[i][j] == 1) {
-//   //         checkNeeded[j] = 1;
-//   //       }
-//   //     }
-//   // }
-
-//   // for (int i = 0; i < population; i++) {
-//   //   if (checkNeeded[i] == checkNeeded2[i]) {
-//   //     count++;
-//   //   } else {
-//   //     printf("not the same\n");
-//   //   }
-//   // }
-//   t = clock() - t;
-//   double time_taken = ((double)t) / CLOCKS_PER_SEC;  // in seconds
-
-//   printf("fun() took %f seconds to execute \n", time_taken);
-//   return count;
-//   // free(reach);
-//   // free(adjMatrix);
-// }
 
 // new function added below
 int countIP(int pop) {
