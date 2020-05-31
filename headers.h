@@ -18,3 +18,5 @@ int checkInfected(int);
 int countCommonPrimeFactors(int, int);
 int countPrimeFactors(int);
 int gcd(int, int);
+int countIP(int);
+void printtable(int, int, int, double, double, double, double, double, double, double, double);

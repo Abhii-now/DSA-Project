@@ -1,10 +1,11 @@
+
 #include "headers.h"
 
 int main(void) {
   srand(time(0));
   int results[10] = {0}, pop = 2000, perSP = 3, socdis = 0, ip = 0,
       infection = 0;
-  double sum = 0;
+  double sum = 0;                   // initialisation of different variables and arrays as per requirement
   double res3[4] = {0.0};
   double stddev[4] = {0.0};
   // int temp = doExperiments(2000, 3, 33, 5);
@@ -77,8 +78,8 @@ int main(void) {
       }
       res3[k] = sum / 10;  // res3[] stores the average of these 10 iterations
       for (int i2 = 0; i2 < 10; i2++) {
-        stddev[k] += (float)pow((float)results[i2] - res3[k], 2);
-      }
+        stddev[k] += (float)pow((float)results[i2] - res3[k], 2); 
+      }                    // calculation of standard deviation for each case
       stddev[k] /= 10.0;
       stddev[k] = sqrt(stddev[k]);
       printf("stddev : %f for k : %d is", stddev[k], k);
